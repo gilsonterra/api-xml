@@ -7,14 +7,14 @@ use Illuminate\Http\UploadedFile;
 
 class IndexControllerTest extends TestCase
 {
-    public function testPostUploadFileIsEmpty()
+    public function testRequestPostUploadFileIsEmpty()
     {
         $file = UploadedFile::fake()->createWithContent('test.xml', '');
         $response = $this->post('/upload', ['xml' => $file]);
         $response->assertSessionHas('error', 'File is empty.');        
     }
 
-    public function testPostUploadXmlIsEmpty()
+    public function testRequestPostUploadXmlIsEmpty()
     {
         $content =  <<<XML
         <?xml version="1.0" encoding="utf-8"?>

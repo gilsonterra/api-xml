@@ -23,6 +23,7 @@ class CreateImportationsTable extends Migration
             $table->integer('errors')->default(0);
             $table->integer('total')->default(0);
             $table->text('notes')->nullable();
+            $table->json('imported_ids')->nullable();
             $table->timestamps();
         });
     }

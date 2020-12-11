@@ -83,6 +83,24 @@ abstract class AbstractImportService
 
     /**     
      *
+     * @param integer $id
+     * @return void
+     */
+    protected function addImportedIds(int $id): bool
+    {
+        if(!empty($this->importation->imported_ids)){
+            $arrayIds = json_decode($this->importation->imported_ids, true);
+        }
+        else{
+            $arrayIds = [];
+        }
+        
+        array_push($arrayIds, $id);    
+        return $this->importation->update(['imported_ids' => json_encode($arrayIds)]);
+    }
+
+    /**     
+     *
      * @param Importations $importation
      * @return void
      */

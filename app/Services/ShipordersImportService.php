@@ -24,7 +24,7 @@ final class ShipordersImportService extends AbstractImportService
                 $this->importShipOrder($shipOrderXml);
             }            
 
-            $this->updateStatus($this->importation->errors > 0 ? Importations::IMPORTED_WITH_ERROR : Importations::IMPORTED_WITH_SUCCESS);
+            $this->updateStatus($this->importation->errors > 0 ? Importations::IMPORTED_WITH_ERROR : Importations::IMPORTED_WITH_SUCCESS);        
         } catch (Exception $exception) {
             $this->addCountError();
             $this->updateNotes($exception->getMessage());
@@ -58,6 +58,7 @@ final class ShipordersImportService extends AbstractImportService
 
             if ($shipOrder->save()) {
                 $this->addCountSuccess();         
+                $this->addImportedIds($shipOrder->id);
                 $this->importItems($shipOrder, $shipOrderXml->items);       
             }
         } catch (Exception $exception) {
