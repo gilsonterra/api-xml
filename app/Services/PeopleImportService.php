@@ -46,6 +46,7 @@ final class PeopleImportService extends AbstractImportService
 
             if ($person->save()) {
                 $this->addCountSuccess();
+                $this->addImportedIds($person->id);
                 $this->importPhones($person, $personXml->phones);
             }
         } catch (Exception $exception) {

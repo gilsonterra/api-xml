@@ -4,12 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\Importations;
 use App\Models\People;
-use App\Services\ImportationServiceFacade;
 use App\Services\ShipordersImportService;
-use Exception;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
@@ -72,7 +68,7 @@ class ShipordersImportServiceTest extends TestCase
                 </items>
             </shiporder>            
             <shiporder>
-                <orderid>3</orderid>
+                <orderid>2</orderid>
                 <orderperson>99999</orderperson>
                 <shipto>
                     <name>Name 3</name>
@@ -102,6 +98,7 @@ class ShipordersImportServiceTest extends TestCase
         $this->assertEquals(Importations::IMPORTED_WITH_ERROR, $importation->status);         
         $this->assertEquals(1, $importation->errors);
         $this->assertEquals(1, $importation->success);        
+        $this->assertEquals("[1]", $importation->imported_ids);    
     }
 
 
@@ -129,7 +126,7 @@ class ShipordersImportServiceTest extends TestCase
                 </items>
             </shiporder>            
             <shiporder>
-                <orderid>3</orderid>
+                <orderid>2</orderid>
                 <orderperson>[:person_id:]</orderperson>
                 <shipto>
                     <name>Name 3</name>
@@ -160,5 +157,6 @@ class ShipordersImportServiceTest extends TestCase
         $this->assertEquals(Importations::IMPORTED_WITH_SUCCESS, $importation->status);         
         $this->assertEquals(0, $importation->errors);
         $this->assertEquals(2, $importation->success);                       
+        $this->assertEquals("[1,2]", $importation->imported_ids); 
     }
 }
