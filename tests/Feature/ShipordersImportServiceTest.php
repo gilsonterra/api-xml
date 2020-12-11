@@ -11,11 +11,6 @@ use Tests\TestCase;
 
 class ShipordersImportServiceTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
     public function testImport()
     {        
         

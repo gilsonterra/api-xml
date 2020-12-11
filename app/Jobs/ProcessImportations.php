@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Importations;
+use App\Services\ImportationServiceFacade;
 use App\Services\ImportationsProcessor;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -36,8 +37,8 @@ class ProcessImportations implements ShouldQueue
      *
      * @return void
      */
-    public function handle(ImportationsProcessor $processor)
+    public function handle()
     {
-        $processor->importRegisters($this->importation);
+        ImportationServiceFacade::import($this->importation);       
     }
 }

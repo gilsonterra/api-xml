@@ -21,9 +21,9 @@ class IndexController extends Controller
             if (!$request->hasFile('xml')) {
                 throw new FileExistsException('XML is empty.');
             }
-
+            $async = (bool) $request->post('async');
             $processor = new ImportationsProcessor();
-            $importations =  $processor->createProcessFromXmlFile($request->file('xml'));
+            $importations =  $processor->createProcessFromXmlFile($request->file('xml'), $async);
 
             if ($importations) {
                 $link = url('api/importations', ['id' => $importations->id]);

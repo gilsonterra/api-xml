@@ -38,6 +38,15 @@
                                     <input type="file" name="xml" id="xml" class="input-file" accept="text/xml">
                                 </div>
                             </div>
+                            <div>
+                                <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
+                                    <label for="async">
+                                        Async process
+                                        <input type="checkbox" name="async" id="async" checked value="1" />
+                                    </label>
+                                    
+                                </div>
+                            </div>
                             <br>
                             <div>
                                 <div class="text-gray-600 dark:text-gray-400 text-sm">

@@ -8,7 +8,12 @@ use SimpleXMLElement;
 trait XmlTrait
 {
 
-    protected function createXmlFromFile(string $path)
+    /**     
+     *
+     * @param string $path
+     * @return SimpleXMLElement
+     */
+    protected function createXmlFromFile(string $path): SimpleXMLElement
     {        
         $xmlString = file_get_contents($path);
         return $this->createXmlFromString($xmlString);

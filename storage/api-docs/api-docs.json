@@ -53,36 +53,134 @@
                     }
                 }
             }
+        },
+        "/shiporders": {
+            "get": {
+                "tags": [
+                    "ShipOrder"
+                ],
+                "summary": "Get all shiporders",
+                "operationId": "App\\Http\\Controllers\\ShipordersController::all",
+                "responses": {
+                    "200": {
+                        "description": "ShipOrder"
+                    }
+                }
+            }
+        },
+        "/shiporders/{id}": {
+            "get": {
+                "tags": [
+                    "ShipOrder"
+                ],
+                "summary": "Get shiporder by id",
+                "operationId": "App\\Http\\Controllers\\ShipordersController::show",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ShipOrder ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ShipOrder"
+                    }
+                }
+            }
         }
     },
     "components": {
         "schemas": {
-            "PersonRequest": {
-                "title": "PersonRequest",
-                "description": "Request of Person",
+            "Person": {
+                "title": "Person",
+                "description": "Person Imported",
                 "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
                     "name": {
+                        "type": "string"
+                    },
+                    "phones": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Phone"
+                        }
+                    },
+                    "shiporders": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Shiporder"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "Phone": {
+                "title": "Phone",
+                "description": "Phone of person",
+                "properties": {
+                    "number": {
                         "type": "string"
                     }
                 },
                 "type": "object"
             },
-            "PersonResponse": {
-                "title": "PersonResponse",
-                "type": "object",
-                "allOf": [
-                    {
-                        "properties": {
-                            "id": {
-                                "type": "integer"
-                            }
-                        },
-                        "type": "object"
+            "Shiporder": {
+                "title": "ShipOrder",
+                "description": "Ship Order from Person",
+                "properties": {
+                    "id": {
+                        "type": "integer"
                     },
-                    {
-                        "$ref": "#/components/schemas/PersonRequest"
+                    "person": {
+                        "$ref": "#/components/schemas/Person"
+                    },
+                    "shipto_address": {
+                        "type": "string"
+                    },
+                    "shipto_name": {
+                        "type": "string"
+                    },
+                    "shipto_city": {
+                        "type": "string"
+                    },
+                    "shipto_country": {
+                        "type": "string"
+                    },
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Items"
+                        }
                     }
-                ]
+                },
+                "type": "object"
+            },
+            "Items": {
+                "title": "Items",
+                "description": "Items of shiporder",
+                "properties": {
+                    "title": {
+                        "type": "string"
+                    },
+                    "note": {
+                        "type": "string"
+                    },
+                    "quantity": {
+                        "type": "integer"
+                    },
+                    "price": {
+                        "type": "float"
+                    }
+                },
+                "type": "object"
             }
         }
     },

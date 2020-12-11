@@ -4,38 +4,87 @@ namespace App\Services;
 
 use App\Models\Importations;
 use App\Traits\XmlTrait;
-use SimpleXMLElement;
 
 abstract class AbstractImportService
 {
 
     use XmlTrait;
 
-    /**     
-     *
-     * @var array
-     */
-    private $errors = [];
+    private const COLUMN_SUCCESS = 'success';
+    private const COLUMN_ERROR = 'errors';
 
     /**     
-     *
-     * @return array
+     * @var App\Models\Importations
      */
-    protected function getErrors(): array
+    protected $importation;
+
+    /**
+     *
+     * @param Importations $importation
+     */
+    public function __construct(Importations $importation)
     {
-        return $this->errors;
+        $this->importation = $importation;
     }
 
-    /**     
+    /**
      *
-     * @param string $message
+     * @param Importations $importation
+     * @param string $newNote
+     * @return boolean
+     */
+    protected function updateNotes(string $newNote): bool
+    {
+        $note = $this->importation->notes . ' ' . $newNote;
+        return $this->importation->update(['notes' => $note]);
+    }
+
+    /**
+     *
+     * @param string $status
      * @return void
      */
-    protected function addErrors(string $message): void
+    protected function updateStatus(string $status)
     {
-        array_push($this->errors, $message);
+        return $this->importation->update(['status' => $status]);
     }
 
+    /**     
+     *
+     * @param Importations $importation
+     * @param string $columnName
+     * @return boolean
+     */
+    private function addCount(string $columnName): bool
+    {
+        $count = intval($this->importation[$columnName]) + 1;
+        return $this->importation->update([$columnName => $count]);
+    }
 
-    abstract public function import(Importations $importation): void;    
+    /**
+     *
+     * @param Importations $importation
+     * @return bool
+     */
+    protected function addCountSuccess(): bool
+    {
+        return $this->addCount(self::COLUMN_SUCCESS);
+    }
+
+    /**    
+     *
+     * @param Importations $importation
+     * @return bool
+     */
+    protected function addCountError(): bool
+    {
+        return $this->addCount(self::COLUMN_ERROR);
+    }
+
+    /**     
+     *
+     * @param Importations $importation
+     * @return void
+     */
+    abstract public function import(): void;    
 }

@@ -4,53 +4,97 @@ namespace App\Services;
 
 use App\Models\Importations;
 use App\Models\Items;
+use App\Models\People;
 use App\Models\Shiporders;
+use Exception;
 use SimpleXMLElement;
 
 final class ShipordersImportService extends AbstractImportService
 {
-    /**     
-     *
-     * @param SimpleXMLElement $xml
+    /**          
      * @return void
      */
-    public function import(Importations $importation): void
+    public function import(): void
     {
-        $importation->update(['status' => Importations::IMPORTING]);
+        try {
+            $this->updateStatus(Importations::IMPORTING);
+            $xml = $this->createXmlFromFile($this->importation->path);
 
-        $success = 0;
-        $errors = 0;
-        $xml = $this->createXmlFromFile($importation->path);
+            foreach ($xml as $shipOrderXml) {
+                $this->importShipOrder($shipOrderXml);
+            }            
 
-        foreach ($xml as $objectXml) {                    
-            $shipOrder = Shiporders::firstOrNew([
-                'id' => (int) $objectXml->orderid
-            ]);                   
-            $shipOrder->person_id = (int) $objectXml->orderperson;
-            $shipOrder->shipto_name = (string) $objectXml->shipto->name;
-            $shipOrder->shipto_address = (string) $objectXml->shipto->address;
-            $shipOrder->shipto_city = (string) $objectXml->shipto->city;
-            $shipOrder->shipto_country = (string) $objectXml->shipto->country;
-            $shipOrder->save();
-            $success++;
-
-            $importation->update(['success' => $success]);            
-
-            foreach ($objectXml->items as $itemsXml) {
-                Items::where('shiporder_id', $shipOrder->id)->delete();
-                foreach ($itemsXml->item as $item) {
-                    $item = new Items();
-                    $item->title = (string) $item->title;
-                    $item->note = (string) $item->note;
-                    $item->quantity = (float) $item->quantity;
-                    $item->price = (float) $item->price;
-
-                    $shipOrder->items()->save($item);
-                }
-            }           
+            $this->updateStatus($this->importation->errors > 0 ? Importations::IMPORTED_WITH_ERROR : Importations::IMPORTED_WITH_SUCCESS);
+        } catch (Exception $exception) {
+            $this->addCountError();
+            $this->updateNotes($exception->getMessage());
+            $this->updateStatus(Importations::IMPORTED_WITH_ERROR);            
         }
+    }
 
-        $status = $errors > 0 ? Importations::IMPORTED_WITH_ERROR : Importations::IMPORTED_WITH_SUCCESS;
-        $importation->update(['status' => $status]);
+    /**     
+     *
+     * @param SimpleXMLElement $shipOrderXml
+     * @return void
+     */
+    private function importShipOrder(SimpleXMLElement $shipOrderXml)
+    {
+        try {
+            $shipOrder = Shiporders::firstOrNew([
+                'id' => (int) $shipOrderXml->orderid
+            ]);
+
+            $shipOrder->person_id = (int) $shipOrderXml->orderperson;
+
+            // Check if person exist in database           
+            if(!People::find($shipOrder->person_id)){                
+                throw new Exception(sprintf("The ShipOrder with ID '%s' have no person with ID '%s' registered.", $shipOrder->id, $shipOrder->person_id));
+            }
+
+            $shipOrder->shipto_name = (string) $shipOrderXml->shipto->name;
+            $shipOrder->shipto_address = (string) $shipOrderXml->shipto->address;
+            $shipOrder->shipto_city = (string) $shipOrderXml->shipto->city;
+            $shipOrder->shipto_country = (string) $shipOrderXml->shipto->country;
+
+            if ($shipOrder->save()) {
+                $this->addCountSuccess();         
+                $this->importItems($shipOrder, $shipOrderXml->items);       
+            }
+        } catch (Exception $exception) {
+            $this->addCountError();
+            $this->updateNotes($exception->getMessage());            
+        }
+    }
+
+    /**     
+     *
+     * @param Shiporders $shiporder
+     * @param SimpleXMLElement $items
+     * @return void
+     */
+    private function importItems(Shiporders $shiporder, SimpleXMLElement $items): void
+    {
+        foreach ($items as $itemsXml) {                        
+            foreach ($itemsXml->item as $itemXml) {
+                $item = new Items();
+                $item->title = (string) $itemXml->title;
+                $item->note = (string) $itemXml->note;
+                $item->quantity = (float) $itemXml->quantity;
+                $item->price = (float) $itemXml->price;
+
+                // validations
+                if (!is_numeric($item->quantity)) {
+                    $this->updateNotes(sprintf("ShipOrder ID: '%s' with quantity '%s' is invalid.", $shiporder->id, $item->quantity));
+                    continue;
+                }
+
+                if (!is_float($item->price)) {
+                    $this->updateNotes(sprintf("ShipOrder ID: '%s' with price '%s' is invalid. Float is expected.", $shiporder->id, $item->price));
+                    continue;
+                }
+
+                $shiporder->items()->save($item);
+            }
+        }
     }
 }

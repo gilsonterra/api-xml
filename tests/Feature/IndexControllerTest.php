@@ -2,10 +2,7 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
 
 class IndexControllerTest extends TestCase
@@ -13,11 +10,7 @@ class IndexControllerTest extends TestCase
     public function testPostUploadFileIsEmpty()
     {
         $file = UploadedFile::fake()->createWithContent('test.xml', '');
-
-        $response = $this->post('/upload', [
-            'xml' => $file
-        ]);
-
+        $response = $this->post('/upload', ['xml' => $file]);
         $response->assertSessionHas('error', 'File is empty.');        
     }
 
@@ -53,11 +46,7 @@ class IndexControllerTest extends TestCase
         XML;
 
         $file = UploadedFile::fake()->createWithContent('test.xml', $content);
-
-        $response = $this->post('/upload', [
-            'xml' => $file
-        ]);
-
+        $response = $this->post('/upload', ['xml' => $file]);
         $response->assertSessionHas('success');        
     }
 }

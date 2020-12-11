@@ -7,7 +7,7 @@ use App\Models\People;
 
 class PeopleController extends Controller
 {
-     /**
+    /**
      * @OA\Get(
      *     path="/people",
      *     summary="Get all people",     
@@ -15,11 +15,10 @@ class PeopleController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Person",     
-     *         @OA\Schema(ref="#/components/schemas/PersonResponse", type="array"),     
+     *         @OA\Schema(ref="#/components/schemas/Person", type="array"),     
      *     )
      * )
      * 
-     * @param int $id
      * @return People
      */
     public function all()
@@ -42,7 +41,7 @@ class PeopleController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Person",     
-     *         @OA\Schema(ref="#/components/schemas/PersonResponse"),     
+     *         @OA\Schema(ref="#/components/schemas/Person"),     
      *     )
      * )
      * 

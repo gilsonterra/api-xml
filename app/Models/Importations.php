@@ -16,4 +16,9 @@ class Importations extends Model
 
     protected $guarded = ['id'];
     protected $hidden = ['path'];
+    protected $appends = ['link_api'];
+
+    public function getLinkApiAttribute(){
+        return sprintf('%s/%s', url('api'), $this->attributes['type']);
+    }
 }

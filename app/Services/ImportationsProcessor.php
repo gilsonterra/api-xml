@@ -43,7 +43,7 @@ final class ImportationsProcessor
      * @param UploadedFile $file
      * @return Importations
      */
-    public function createProcessFromXmlFile(UploadedFile $file): Importations
+    public function createProcessFromXmlFile(UploadedFile $file, bool $async = true): Importations
     {
         try {
             $xmlString = file_get_contents($file);
@@ -55,8 +55,7 @@ final class ImportationsProcessor
             $xmlObject = $this->createXmlFromString($xmlString);
             $fileImported = $this->importFileToStorage($file);
 
-
-            $importations = Importations::create([
+            $importation = Importations::create([
                 'file' => $fileImported->getFilename(),
                 'path' => storage_path('app/uploads/') . $fileImported->getFilename(),
                 'status' => Importations::PENDING,
@@ -64,32 +63,16 @@ final class ImportationsProcessor
                 'total' => $xmlObject->children()->count()
             ]);
 
-            ProcessImportations::dispatch($importations); // call Job
-            return $importations;
+            if ($async) {
+                ProcessImportations::dispatch($importation); // call Job
+            }
+            else{
+                ImportationServiceFacade::import($importation);
+            }
+
+            return $importation;
         } catch (Exception $exception) {
             throw $exception;
         }
-    }
-
-    /**
-     *
-     * @param Importations $importations
-     * @return void
-     */
-    public function importRegisters(Importations $importation)
-    {
-        switch ($importation->type) {
-            case 'people':
-                $service = new PeopleImportService();
-                break;
-            case 'shiporders':
-                $service = new ShipordersImportService();
-                break;
-            default:
-                throw new Exception('Type of xml is invalid.');
-                break;
-        }
-
-        $service->import($importation);
     }
 }
