@@ -6,10 +6,25 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
+
+/**
+ *  @OA\Schema(
+ *     schema="User",
+ *     type="object",
+ *     title="User",
+ *     description="User login",
+ *     properties={  
+ *         @OA\Property(property="email", type="string"),
+ *         @OA\Property(property="password", type="string")
+ *     }
+ *  )
+ *
+ */
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.

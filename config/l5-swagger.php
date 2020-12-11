@@ -5,7 +5,7 @@ return [
     'documentations' => [
         'default' => [
             'api' => [
-                'title' => 'L5 Swagger UI',
+                'title' => 'Import XML API',
             ],
 
             'routes' => [
@@ -103,6 +103,7 @@ return [
                 /*
                  * Examples of Security schemes
                 */
+                
                 /*
                 'api_key_security_example' => [ // Unique name of security
                     'type' => 'apiKey', // The type of the security scheme. Valid values are "basic", "apiKey" or "oauth2".

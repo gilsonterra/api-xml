@@ -21,7 +21,14 @@ use Illuminate\Routing\Controller as BaseController;
  *         description="Server API Rest",
  *         url="http://localhost/api"
  *     ),
+ * ),
+ * 
+ * @OA\SecurityScheme(
+ *     securityScheme="bearer_token",
+ *     type="http",
+ *     scheme="bearer"
  * )
+ * 
  */
 class Controller extends BaseController
 {

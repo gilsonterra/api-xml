@@ -14,6 +14,48 @@
         }
     ],
     "paths": {
+        "/login": {
+            "post": {
+                "tags": [
+                    "Login"
+                ],
+                "summary": "get token",
+                "operationId": "App\\Http\\Controllers\\LoginController::index",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Token",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "schema": "Token",
+                                    "title": "Token",
+                                    "description": "User Token",
+                                    "properties": {
+                                        "user": {
+                                            "$ref": "#/components/schemas/User"
+                                        },
+                                        "token": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/people": {
             "get": {
                 "tags": [
@@ -23,9 +65,19 @@
                 "operationId": "App\\Http\\Controllers\\PeopleController::all",
                 "responses": {
                     "200": {
-                        "description": "Person"
+                        "description": "Person",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
             }
         },
         "/people/{id}": {
@@ -49,9 +101,19 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Person"
+                        "description": "Person",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
             }
         },
         "/shiporders": {
@@ -63,9 +125,19 @@
                 "operationId": "App\\Http\\Controllers\\ShipordersController::all",
                 "responses": {
                     "200": {
-                        "description": "ShipOrder"
+                        "description": "ShipOrder",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
             }
         },
         "/shiporders/{id}": {
@@ -89,9 +161,19 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "ShipOrder"
+                        "description": "ShipOrder",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
             }
         }
     },
@@ -181,6 +263,25 @@
                     }
                 },
                 "type": "object"
+            },
+            "User": {
+                "title": "User",
+                "description": "User login",
+                "properties": {
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearer_token": {
+                "type": "http",
+                "scheme": "bearer"
             }
         }
     },

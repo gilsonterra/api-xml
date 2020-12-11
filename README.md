@@ -32,6 +32,12 @@ docker exec -it gilson_test_app sh -c 'php artisan queue:work --queue=high,defau
 docker exec -it gilson_test_app sh -c 'php artisan test'
 ```
 
+## Comando para atualizar a documentação do swagger
+
+```shell
+docker exec -it gilson_test_app sh -c 'php artisan l5-swagger:generate'
+```
+
 ## Algumas imagens do sistema em funcionamento
 
 ![Import Person](docs/import_person.gif)

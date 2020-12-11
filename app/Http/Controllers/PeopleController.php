@@ -10,12 +10,14 @@ class PeopleController extends Controller
     /**
      * @OA\Get(
      *     path="/people",
-     *     summary="Get all people",     
+     *     summary="Get all people",    
+     *     security={ { "bearer_token": {} } }, 
      *     tags={"People"},     
      *     @OA\Response(
      *         response=200,
      *         description="Person",     
-     *         @OA\Schema(ref="#/components/schemas/Person", type="array"),     
+     *         @OA\Schema(ref="#/components/schemas/Person", type="array"),   
+     *         @OA\JsonContent()    
      *     )
      * )
      * 
@@ -29,9 +31,10 @@ class PeopleController extends Controller
     /**
      * @OA\Get(
      *     path="/people/{id}",
-     *     summary="Get person by id",     
+     *     summary="Get person by id",    
+     *     security={ { "bearer_token": {} } },  
      *     tags={"People"},     
-     *      @OA\Parameter(
+     *     @OA\Parameter(
      *         name="id",
      *         in= "path",
      *         description= "Person ID",
@@ -41,7 +44,8 @@ class PeopleController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Person",     
-     *         @OA\Schema(ref="#/components/schemas/Person"),     
+     *         @OA\Schema(ref="#/components/schemas/Person"),  
+     *         @OA\JsonContent()   
      *     )
      * )
      * 
