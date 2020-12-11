@@ -1,0 +1,92 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Import XML API",
+        "license": {
+            "name": "MIT"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost/api",
+            "description": "Server API Rest"
+        }
+    ],
+    "paths": {
+        "/people": {
+            "get": {
+                "tags": [
+                    "People"
+                ],
+                "summary": "Get all people",
+                "operationId": "App\\Http\\Controllers\\PeopleController::all",
+                "responses": {
+                    "200": {
+                        "description": "Person"
+                    }
+                }
+            }
+        },
+        "/people/{id}": {
+            "get": {
+                "tags": [
+                    "People"
+                ],
+                "summary": "Get person by id",
+                "operationId": "App\\Http\\Controllers\\PeopleController::show",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Person ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Person"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "PersonRequest": {
+                "title": "PersonRequest",
+                "description": "Request of Person",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "PersonResponse": {
+                "title": "PersonResponse",
+                "type": "object",
+                "allOf": [
+                    {
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    {
+                        "$ref": "#/components/schemas/PersonRequest"
+                    }
+                ]
+            }
+        }
+    },
+    "security": [
+        []
+    ]
+}

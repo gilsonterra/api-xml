@@ -22,23 +22,22 @@ final class PeopleImportService extends AbstractImportService
         $errors = 0;
         $xml = $this->createXmlFromFile($importation->path);
 
-        foreach ($xml as $personXml) {            
-            $people = People::firstOrNew([
-                'id' => (int) $personXml->personid
+        foreach ($xml as $objectXml) {            
+            $person = People::firstOrNew([
+                'id' => (int) $objectXml->personid
             ]);
-            $people->name = (string) $personXml->personname;
-            $people->importation_id = $importation->id;
-            $people->save();
+            $person->name = (string) $objectXml->personname;            
+            $person->save();
             $success++;
 
             $importation->update(['success' => $success]);            
 
-            foreach ($personXml->phones as $phoneXml) {
-                Phones::where('person_id', $people->id)->delete();
+            foreach ($objectXml->phones as $phoneXml) {
+                Phones::where('person_id', $person->id)->delete();
                 foreach ($phoneXml->phone as $number) {
                     $phone = new Phones();
                     $phone->number = (string) $number;
-                    $people->phones()->save($phone);
+                    $person->phones()->save($phone);
                 }
             }
         }

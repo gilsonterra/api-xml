@@ -9,6 +9,7 @@ use App\Traits\XmlTrait;
 use DateTime;
 use Exception;
 use Illuminate\Http\UploadedFile;
+use PhpParser\Node\Stmt\Break_;
 
 final class ImportationsProcessor
 {
@@ -77,10 +78,18 @@ final class ImportationsProcessor
      */
     public function importRegisters(Importations $importation)
     {
-        if($importation->type == 'people')
-        {
-            $service = new PeopleImportService();
-            $service->import($importation);
+        switch ($importation->type) {
+            case 'people':
+                $service = new PeopleImportService();
+                break;
+            case 'shiporders':
+                $service = new ShipordersImportService();
+                break;
+            default:
+                throw new Exception('Type of xml is invalid.');
+                break;
         }
+
+        $service->import($importation);
     }
 }

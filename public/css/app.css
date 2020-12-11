@@ -39,8 +39,7 @@ a {
 
 svg,
 video {
-    display: block;
-    vertical-align: middle
+    display: block;    
 }
 
 video {
@@ -86,8 +85,21 @@ video {
     align-items: center
 }
 
-.justify-center {
-    justify-content: center
+.container-title {
+    margin-top: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.container-title .title {
+    font-size: 2em;
+    font-weight: 600;
+}
+
+.container-title a {
+    color: blue;
+    text-decoration: underline;
 }
 
 .font-semibold {
@@ -350,7 +362,11 @@ video {
 }
 
 .container-form {
-    width: 600px;
+    min-width: 600px;    
+}
+
+.justify-center{
+    justify-content: space-between
 }
 
 @media (min-width:640px) {

@@ -15,10 +15,15 @@
 </head>
 
 <body class="antialiased">
-    <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-top sm:pt-0">
 
-        <div class="container-form max-w-6xl mx-auto sm:px-6 lg:px-8">
-            <h1>Import XML</h1>
+    <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-top sm:pt-0">
+       
+        <div class="container-form max-w-6xl mx-auto sm:px-6 lg:px-8">        
+            <div class="container-title">
+                <div class="title">Import XML</div>
+                <a href="{{ url('api/documentation')}}" alt="documentation" target="_blank">API Documentation</a>
+            </div>
+
 
             <form action="{{ action('IndexController@upload') }}" method="POST" enctype="multipart/form-data">
                 @csrf
