@@ -15,10 +15,18 @@ class PeopleController extends Controller
      *     tags={"People"},     
      *     @OA\Response(
      *         response=200,
-     *         description="Person",     
-     *         @OA\Schema(ref="#/components/schemas/Person", type="array"),   
-     *         @OA\JsonContent()    
-     *     )
+     *         description="People", 
+     *         @OA\MediaType(    
+     *              mediaType="application/json", 
+     *              @OA\Schema(
+     *                  schema="People",
+     *                  type="array",
+     *                  title="People",
+     *                  description="People",
+     *                  @OA\Items(ref="#/components/schemas/Person")
+     *              )
+     *         )
+     *     ))
      * )
      * 
      * @return People
@@ -43,9 +51,19 @@ class PeopleController extends Controller
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Person",     
-     *         @OA\Schema(ref="#/components/schemas/Person"),  
-     *         @OA\JsonContent()   
+     *         description="People", 
+     *         @OA\MediaType(    
+     *              mediaType="application/json", 
+     *              @OA\Schema(
+     *                  schema="Person",
+     *                  type="object",
+     *                  title="Person",
+     *                  description="Person",
+     *                  properties={  
+     *                      @OA\Property(property="person", ref="#/components/schemas/Person")
+     *                  }
+     *              )
+     *         )
      *     )
      * )
      * 

@@ -14,6 +14,7 @@ use App\Http\Controllers\PeopleController;
 |
 */
 
+Route::post('/login', "LoginController@index");
 Route::get('/', 'IndexController@index');
 Route::post('/upload', 'IndexController@upload');
 

@@ -24,9 +24,30 @@
                 "requestBody": {
                     "required": true,
                     "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
                         "multipart/form-data": {
                             "schema": {
-                                "$ref": "#/components/schemas/User"
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
                             }
                         }
                     }
@@ -65,10 +86,18 @@
                 "operationId": "App\\Http\\Controllers\\PeopleController::all",
                 "responses": {
                     "200": {
-                        "description": "Person",
+                        "description": "People",
                         "content": {
                             "application/json": {
-                                "schema": {}
+                                "schema": {
+                                    "schema": "People",
+                                    "title": "People",
+                                    "description": "People",
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Person"
+                                    }
+                                }
                             }
                         }
                     }
@@ -101,10 +130,20 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Person",
+                        "description": "People",
                         "content": {
                             "application/json": {
-                                "schema": {}
+                                "schema": {
+                                    "schema": "Person",
+                                    "title": "Person",
+                                    "description": "Person",
+                                    "properties": {
+                                        "person": {
+                                            "$ref": "#/components/schemas/Person"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
                             }
                         }
                     }
@@ -125,10 +164,18 @@
                 "operationId": "App\\Http\\Controllers\\ShipordersController::all",
                 "responses": {
                     "200": {
-                        "description": "ShipOrder",
+                        "description": "Shiporders",
                         "content": {
                             "application/json": {
-                                "schema": {}
+                                "schema": {
+                                    "schema": "Shiporders",
+                                    "title": "Shiporders",
+                                    "description": "Shiporder",
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Shiporder"
+                                    }
+                                }
                             }
                         }
                     }
@@ -161,10 +208,135 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "ShipOrder",
+                        "description": "Shiporders",
                         "content": {
                             "application/json": {
-                                "schema": {}
+                                "schema": {
+                                    "schema": "Shiporder",
+                                    "title": "Shiporder",
+                                    "description": "Shiporder",
+                                    "properties": {
+                                        "shiporder": {
+                                            "$ref": "#/components/schemas/Shiporder"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/user": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get all users",
+                "operationId": "App\\Http\\Controllers\\UserController::all",
+                "responses": {
+                    "200": {
+                        "description": "User",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "schema": "User",
+                                    "title": "User",
+                                    "description": "User",
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/User"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "create user",
+                "operationId": "App\\Http\\Controllers\\UserController::create",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Token",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "schema": "Token",
+                                    "title": "Token",
+                                    "description": "User Token",
+                                    "properties": {
+                                        "user": {
+                                            "$ref": "#/components/schemas/User"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/{id}": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get user by id",
+                "operationId": "App\\Http\\Controllers\\UserController::show",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "schema": "User",
+                                    "title": "User",
+                                    "description": "User",
+                                    "properties": {
+                                        "user": {
+                                            "$ref": "#/components/schemas/User"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
                             }
                         }
                     }
@@ -221,9 +393,6 @@
                     "id": {
                         "type": "integer"
                     },
-                    "person": {
-                        "$ref": "#/components/schemas/Person"
-                    },
                     "shipto_address": {
                         "type": "string"
                     },
@@ -268,6 +437,9 @@
                 "title": "User",
                 "description": "User login",
                 "properties": {
+                    "name": {
+                        "type": "string"
+                    },
                     "email": {
                         "type": "string"
                     },

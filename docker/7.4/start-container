@@ -15,9 +15,3 @@ if [ $# -gt 0 ];then
 else
     /usr/bin/supervisord
 fi
-
-
-composer install
-./vendor/bin/sail up
-docker exec -it gilson_test_app sh -c 'php artisan migrate'
-docker exec -it gilson_test_app sh -c 'php artisan queue:work --queue=high,default'

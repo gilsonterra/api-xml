@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Model;
  *     description="Ship Order from Person",
  *     properties={  
  *         @OA\Property(property="id", type="integer"), 
- *         @OA\Property(property="person", ref="#/components/schemas/Person"),
  *         @OA\Property(property="shipto_address", type="string"),
  *         @OA\Property(property="shipto_name", type="string"),
  *         @OA\Property(property="shipto_city", type="string"),

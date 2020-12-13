@@ -10,6 +10,7 @@ Esse projeto foi desenvolvido utilizando Laravel 8 e Docker. Foi desenvolvido os
 - Backend utilizando padrões de projeto como Facade e Adpater;
 - Job e Queue para que o upload do arquivos seja assíncrono;
 - API para mostrar os resultados importados;
+- Autentição nos endpoints People e Shiporders
 - Documentação da API utilizando Swagger 3;
 - Autenticação da API usando Laravel Sanctum. Dados de authenticação abaixo:
 
@@ -17,7 +18,6 @@ Esse projeto foi desenvolvido utilizando Laravel 8 e Docker. Foi desenvolvido os
 email: test@test.com
 password: 123
 ```
-
 
 ## Comandos para iniciar o projeto
 
@@ -29,21 +29,21 @@ composer install
 
 2 - Inicializar a docker
 
+*Nota: antes de inicializar a docker, você pode configurar as variáveis de ambiente no arquivo **.env***
+
 ```shell
 ./vendor/bin/sail up
 ```
 
-3 - Executar as migrations
+3 - Executar comando com as configurações iniciais (migrations, test e queue)
 
 ```shell
-docker exec -it gilson_test_app sh -c 'php artisan migrate'
+docker exec -it gilson_test_app sh -c 'php artisan app:configuration'
 ```
 
-4 - Ligar a fila de jobs (para importação assincrona)
+4 - Agora você poderá acessar a aplicaão pelo endereço
 
-```shell
-docker exec -it gilson_test_app sh -c 'php artisan queue:work --queue=high,default'
-```
+[http://localhost:8083](http://localhost:8083) *ou em outra porta configurada no .env*
 
 ## Comando para rodar os testes
 

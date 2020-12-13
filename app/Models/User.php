@@ -13,9 +13,10 @@ use Laravel\Sanctum\HasApiTokens;
  *  @OA\Schema(
  *     schema="User",
  *     type="object",
- *     title="User",
+ *     title="User", 
  *     description="User login",
  *     properties={  
+ *         @OA\Property(property="name", type="string"),
  *         @OA\Property(property="email", type="string"),
  *         @OA\Property(property="password", type="string")
  *     }

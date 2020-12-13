@@ -26,7 +26,18 @@ Route::post('/login', "LoginController@index");
 Route::get('/importations', 'ImportationsController@all');
 Route::get('/importations/{id}', 'ImportationsController@show');
 
-Route::middleware('auth:sanctum')->get('/people', 'PeopleController@all');
-Route::middleware('auth:sanctum')->get('/people/{id}', 'PeopleController@show');
-Route::middleware('auth:sanctum')->get('/shiporders', 'ShipordersController@all');
-Route::middleware('auth:sanctum')->get('/shiporders/{id}', 'ShipordersController@show');
+// Security
+//Route::middleware('auth:sanctum')->get('/people', 'PeopleController@all');
+//Route::middleware('auth:sanctum')->get('/people/{id}', 'PeopleController@show');
+//Route::middleware('auth:sanctum')->get('/shiporders', 'ShipordersController@all');
+//Route::middleware('auth:sanctum')->get('/shiporders/{id}', 'ShipordersController@show');
+
+Route::get('/user', 'UserController@all');
+Route::get('/user/{id}', 'UserController@show');
+Route::post('/user', 'UserController@create');
+
+Route::get('/people', 'PeopleController@all');
+Route::get('/people/{id}', 'PeopleController@show');
+
+Route::get('/shiporders', 'ShipordersController@all');
+Route::get('/shiporders/{id}', 'ShipordersController@show');

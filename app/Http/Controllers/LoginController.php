@@ -16,10 +16,19 @@ class LoginController extends Controller
      *     @OA\RequestBody(
      *         required=true,     
      *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  @OA\Property(property="email", type="string"),
+     *                  @OA\Property(property="password", type="string"),
+     *              )
+     *         ),
+     *         @OA\MediaType(
      *              mediaType="multipart/form-data",
-     *              @OA\Schema(ref="#/components/schemas/User")
+     *              @OA\Schema(
+     *                  @OA\Property(property="email", type="string"),
+     *                  @OA\Property(property="password", type="string"),
+     *              )
      *         )
-     *         
      *     ),
      *    @OA\Response(
      *         response=200,
@@ -43,15 +52,15 @@ class LoginController extends Controller
      * @return Shiporders
      */
     function index(Request $request)
-    {
+    { 
         $user = User::where('email', $request->email)->first();
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
+        if (!$user || !Hash::check($request->password, $user->password)) {            
             return response([
                 'message' => ['These credentials do not match our records.']
             ], 404);
         }
-
+        
         $token = $user->createToken('my-app-token')->plainTextToken;
 
         $response = [

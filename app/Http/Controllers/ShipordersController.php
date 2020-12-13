@@ -15,10 +15,18 @@ class ShipordersController extends Controller
      *     tags={"ShipOrder"},     
      *     @OA\Response(
      *         response=200,
-     *         description="ShipOrder",     
-     *         @OA\Schema(ref="#/components/schemas/ShipOrder", type="array"),   
-     *         @OA\JsonContent()   
-     *     )
+     *         description="Shiporders", 
+     *         @OA\MediaType(    
+     *              mediaType="application/json", 
+     *              @OA\Schema(
+     *                  schema="Shiporders",
+     *                  type="array",
+     *                  title="Shiporders",
+     *                  description="Shiporder",
+     *                  @OA\Items(ref="#/components/schemas/Shiporder")
+     *              )
+     *         )
+     *     ))
      * )
      * 
      * @return Shiporders
@@ -43,9 +51,19 @@ class ShipordersController extends Controller
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="ShipOrder",     
-     *         @OA\Schema(ref="#/components/schemas/ShipOrder"), 
-     *         @OA\JsonContent()     
+     *         description="Shiporders", 
+     *         @OA\MediaType(    
+     *              mediaType="application/json", 
+     *              @OA\Schema(
+     *                  schema="Shiporder",
+     *                  type="object",
+     *                  title="Shiporder",
+     *                  description="Shiporder",
+     *                  properties={  
+     *                      @OA\Property(property="shiporder", ref="#/components/schemas/Shiporder")
+     *                  }
+     *              )
+     *         )
      *     )
      * )
      * 
